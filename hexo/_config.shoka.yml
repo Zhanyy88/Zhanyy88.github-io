@@ -90,13 +90,15 @@ iconfont: "1832207_igi8uaupcus"
 
 menu:
   home: / || home
-  about: /about/ || user
-  tags: /tags/ || tags
+#  about: /about/ || user
+  categories: /categories/ || th
+  archives: /archives/ || list-alt
+#  tags: /tags/ || tags
   posts:
-  #   default: / || feather
+      default: / || feather
   #   archives: /archives/ || list-alt
-      categories: /categories/ || th
-  #   tags: /tags/ || tags
+#      categories: /categories/ || th
+      tags: /tags/ || tags
   # friends: /friends/ || heart
   # links: /links/ || magic
 
@@ -126,7 +128,7 @@ sidebar:
   position: left
   # position: right
   # Replace the default avatar image and set the url here.
-  avatar: avatar.jpg
+  avatar: avatar111.jpg
 
 widgets:
   # if true, will show random posts

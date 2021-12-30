@@ -3,8 +3,8 @@ title: sparksql参数
 abbrlink: 7c6a5d83
 date: 2021-12-28 11:20:52
 urlname: zhanyy
-categories: spark
-tags: [spark,调优]
+categories: Spark
+tags: [Spark,调优]
 ---
 # [sparksql参数](https://www.cnblogs.com/yin-fei/p/10985683.html)
 
@@ -79,7 +79,7 @@ tags: [spark,调优]
     ```
 
 10. exector、storage内存分配
-    ```
+    ``` 
     
     当Spark一个JOB被提交，就会开辟内存空间来存储和计算
     Spark中执行计算和数据存储都是共享同一个内存区域（M），spark.memory.fraction 表示M的大小，其值为相对于JVM堆内存的比例（默认0.6）。剩余的40%是为其他用户数据结构、Spark内部元数据以及避免OOM错误的安全预留空间（大量稀疏数据和异常大的数据记录）。
@@ -178,3 +178,6 @@ tags: [spark,调优]
     
     目前动态分配在处理几十亿以上的数据量时还是有很多未知bug缺陷，使用需谨慎
     ```
+``` 
+$ java 
+```
