@@ -35,6 +35,7 @@ public void run() {
     }
 }
 ```
+## KafkaProducer的send逻辑
 ​	&emsp;&emsp;首先序列消息的key和value (消息必须序列化成二进制流的形式才能在网络中传输）,然后为每一条消息选择对应的分区（表示要将息存储到kafka集群的哪个节点上），最后通知发送线程发送消息。
 
 ```java
@@ -65,7 +66,7 @@ private Future<RecordMetadata> doSend(ProducerRecord<K, V> record, Callback call
 }
 ```
 
-#### 1.为消息选择分区
+### 1.为消息选择分区
 
 ​	&emsp;&emsp;partition()方法为消息选择一个分区编号。为了保证消息负载均衡地分布到各个服务端节点，对于没有键的消息，通过计数器轮询的方式依次分配到不同的分区上；对于有键的消息，对键计算散列值，然后和主题的分区数进行取模得到分区编号。
 
@@ -92,7 +93,7 @@ public int partition(String topic, Object key, byte[] keyBytes, Object value, by
 }
 ```
 
-#### 2.客户端记录收集器
+### 2.客户端记录收集器
 
 ​	&emsp;&emsp;生产者发送的消息先在客户端缓存到记录收集器RecordAccumulator中。
 ![分区队列](https://i.bmp.ovh/imgs/2021/12/aa98fd6363ff174c.png)
