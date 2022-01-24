@@ -13,8 +13,9 @@ categories: Kafka
 ​	&emsp;&emsp;生产者发送的消息在客户端首先被保存到[记录收集器]{.orange}中，[发送线程]{.red}需要发送消息时，从中获取就可以了。不过记录器为了使[发送线程]{.red}更好的工
 作。 在[发送线程]{.red}需要数据时，[记录收集器]{.orange}能够按照节点将消息重新分组再发送给[发送线程]{.red}。[发送线程]{.red}从[记录收集器]{.orange}中得到每个节点上需要发送
 的批记录列表，为每个客户端请求(CLientRequest)。代码如下：
+
 ```java
-    // org.apache.kafka.clients.producer.internals.Sender#run(long)
+// org.apache.kafka.clients.producer.internals.Sender#run(long)
 void run(long now) {
     Cluster cluster = metadata.fetch();
     // 获取准备发送数据的分区列表
@@ -111,6 +112,64 @@ private void sendProduceRequest(long now, int destination, short acks, int timeo
 - [ ] send()。为每个节点创建一个客户端请求，将请求暂存到节点对应的通道中
 - [ ] poll()。轮询动作会真正执行网络请求，比如发送请求给节点、并读取响应。
 
+#### 准备发送客户端请求
+```java
+private void doSend(ClientRequest clientRequest, boolean isInternalRequest, long now) {
+    String nodeId = clientRequest.destination();
+    Send send = request.toSend(nodeId, header);
+    InFlightRequest inFlightRequest = new InFlightRequest(
+            header,
+            clientRequest.createdTimeMs(),
+            clientRequest.destination(),
+            clientRequest.callback(),
+            clientRequest.expectResponse(),
+            isInternalRequest,
+            send,
+            now);
+    this.inFlightRequests.add(inFlightRequest);
+    selector.send(inFlightRequest.send);
+}
+```
+&emsp;&emsp;为了保证服务端的处理性能，客户端网络对象有一个限制条件：**针对同一个服务端，如果上一个客户端请求还没有发送完成，则不允许发送新的客户端请求**。
+InFlightRqeuests类包含一个节点到双端队列额映射结构。在准备发送客户端请求时，请求将添加到指定节点对应的队列中；在收到响应后，才会将请求从队列中移除。
+
+#### 客户端轮询并调用回调函数
+
+```java
+public List<ClientResponse> poll(long timeout, long now) {
+    long metadataTimeout = metadataUpdater.maybeUpdate(now);
+    try {
+        this.selector.poll(Utils.min(timeout, metadataTimeout, requestTimeoutMs));
+    } catch (IOException e) {
+        log.error("Unexpected error during I/O", e);
+    }
+    
+    long updatedNow = this.time.milliseconds();
+    List<ClientResponse> responses = new ArrayList<>();
+    handleAbortedSends(responses);                          // 失败请求的处理器
+    handleCompletedSends(responses, updatedNow);            // 处理已经完成的发送请求，如果不期望得到响应，就认为整个请求全部完成
+    handleCompletedReceives(responses, updatedNow);         // 处理已经完成的发送请求，根据接收到的响应更新响应列表
+    handleDisconnections(responses, updatedNow);            // 断开连接的处理器
+    handleConnections();                                    // 处理连接的处理器
+    handleInitiateApiVersionRequests(updatedNow);           // 
+    handleTimedOutRequests(responses, updatedNow);          // 超时请求的处理器
+
+    // invoke callbacks
+    for (ClientResponse response : responses) {
+        try {
+            response.onComplete();
+        } catch (Exception e) {
+            log.error("Uncaught error in request completion:", e);
+        }
+    }
+
+    return responses;
+}
+```
+
+#### 客户端请求和客户端响应的关系
+&emsp;&emsp;客户端请求(ClientRequest)包含客户端发送的请求和回调处理器，客户端响应(ClientResponse)包含客户端请求对象和响应结果的内容。
+相关代码如下：
 ```java
 
 ```
