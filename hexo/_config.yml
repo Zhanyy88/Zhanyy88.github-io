@@ -75,8 +75,9 @@ default_category: uncategorized
 category_map:
   Flink: flink
   Kafka: kafka
+  Spark: spark
   Java: java
-  杂谈: note
+#  所思所想: note
 tag_map:
 
 # Metadata elements

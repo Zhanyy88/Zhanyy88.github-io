@@ -4,7 +4,7 @@ title: Sql提示语
 tags: [Flink,sql]
 abbrlink: 686ec8f1
 categories: 
-  - flink
+  - Flink
   - Tabel&Sql
 date: 2022-01-17 11:15:57
 ---

@@ -4,7 +4,7 @@ title: FlinkSql读取Hive配置
 tags: [Flink,配置]
 abbrlink: 32987c8c
 categories:
-  - flink
+  - Flink
   - Tabel&Sql
 date: 2021-12-30 11:15:57
 ---
