@@ -125,8 +125,8 @@ social:
 
 sidebar:
   # Sidebar Position.
-  position: left
-  # position: right
+  position: right
+  # position: left
   # Replace the default avatar image and set the url here.
   avatar: avatar.jpg
 
