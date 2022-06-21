@@ -1,5 +1,9 @@
 ---
-abbrlink: '0'
+title: oracle连接方式
+tags:
+  - oracle
+categories: [Java,Oracle]
+abbrlink: 94402b3c
 ---
 ##### 实例名，服务名
 
