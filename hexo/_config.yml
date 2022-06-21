@@ -15,7 +15,7 @@ timezone: 'Asia/Shanghai'
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://zhanyy88.github.io #https://zhanyy88.github.io/Zhanyy-gtihub.io/
 root: /
-permalink: psot/:abbrlink #post/:title.html  #:year/:month/:day/:title/
+permalink: psot/:abbrlink/ #post/:title.html  #:year/:month/:day/:title
 abbrlink:
   alg: crc32  # 算法：crc16(default) and crc32
   rep: hex    # 进制：dec(default) and hex
