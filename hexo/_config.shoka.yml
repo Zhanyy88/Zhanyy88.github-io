@@ -91,16 +91,19 @@ iconfont: "1832207_igi8uaupcus"
 menu:
   home: / || home
 #  about: /about/ || user
-  categories: /categories/ || th
-  archives: /archives/ || list-alt
+#  categories: /categories/ || th
+#  archives: /archives/ || list-alt
 #  tags: /tags/ || tags
   posts:
       default: / || feather
-  #   archives: /archives/ || list-alt
-#      categories: /categories/ || th
+      archives: /archives/ || list-alt
+      categories: /categories/ || th
       tags: /tags/ || tags
   # friends: /friends/ || heart
-  # links: /links/ || magic
+  links:
+      default: / || feather
+      friends: /friends/ || heart
+      webstack: /webstack/ || magic
 
 # Social Links
 # Usage: `Key: permalink || icon || color`
