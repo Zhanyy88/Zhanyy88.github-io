@@ -1,9 +1,9 @@
 ---
 title: Spring注解驱动开发详解
 abbrlink: 18c4fa64
-tag: [Spring注解]
+tag: [Spring,注解]
 sticky: false
-categories: Java
+categories: [Java,Spring]
 date: 2022-02-10 09:46:57
 ---
 
